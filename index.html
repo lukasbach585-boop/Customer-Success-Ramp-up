@@ -4,473 +4,624 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light dark" />
-  <title>90-Tage-Plan – Customer Success (branchenübergreifend)</title>
+  <title>Ramp‑up‑Plan (90 Tage) – Lukas Bach</title>
   <style>
     :root{
-      /* CV-Farbwelt: petrol/grün, klare Kontraste */
-      --primary:#0f766e;      /* petrol */
-      --secondary:#22c55e;    /* grün */
+      --primary:#0f766e; /* petrol */
+      --secondary:#22c55e; /* grün */
       --bg:#f6faf9;
       --card:#ffffff;
       --line:#e5e7eb;
       --text:#0f172a;
-      --muted:#475569;
+      --muted:#64748b;
       --accent:#0ea5a5;
-      --shadow:0 20px 48px rgba(15,118,110,.18);
-      --radius:18px;
+      --shadow:0 12px 30px rgba(15,118,110,.16);
+      --radius:16px;
     }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:18px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .page{max-width:1100px;margin:28px auto;padding:0 18px}
+
+    /* Header */
+    header{
+      position:sticky;top:0;z-index:5;
+      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      color:#fff;border-radius:20px;padding:18px;
+      box-shadow:var(--shadow);display:flex;gap:14px;align-items:center;flex-wrap:wrap
+    }
+    header h1{margin:0;font-size:26px;letter-spacing:.2px}
+    header .sub{opacity:.92;font-size:15px}
+    .spacer{flex:1}
+
+    /* Buttons */
+    .btn{
+      appearance:none;border:0;border-radius:999px;
+      padding:12px 18px;font-weight:700;font-size:16px;
+      cursor:pointer;
+      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      color:#fff;box-shadow:var(--shadow);
+      transition:filter .2s ease;
+    }
+    .btn:hover{filter:brightness(1.08)}
+    .btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+    /* Ghost Variante für Header */
+    .btn.ghost{
+      background:rgba(255,255,255,.14);
+      color:#fff;box-shadow:none;
+    }
+    .btn.ghost:hover{background:rgba(255,255,255,.22)}
+
+    /* Tabs */
+    .tabs{
+      display:flex;gap:8px;background:var(--card);
+      border:1px solid var(--line);border-radius:14px;
+      padding:6px;box-shadow:var(--shadow);margin-top:16px
+    }
+    .tab{flex:1}
+    .tab input{display:none}
+    .tab label{
+      display:block;text-align:center;padding:12px;
+      border-radius:10px;font-weight:700;color:var(--muted);cursor:pointer;
+      font-size:16px;
+    }
+    .tab input:checked+label{
+      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      color:#fff;box-shadow:0 6px 16px rgba(34,197,94,.25)
+    }
+
+    /* Panels */
+    .panel{display:none;margin-top:14px}
+    .panel.active{display:block}
+
+    /* Cards */
+    .card{
+      background:var(--card);border:1px solid var(--line);
+      border-radius:var(--radius);box-shadow:var(--shadow);padding:18px
+    }
+    h2{margin:0 0 6px;font-size:20px;color:var(--primary)}
+    h3{margin:10px 0 4px;font-size:18px}
+    ul{margin:6px 0 0 20px}
+    li{margin:4px 0}
+    .small{color:var(--muted);font-size:15px}
+
+    /* Präsentation */
+    .deck{position:relative;border-radius:18px;overflow:hidden}
+    .slides{position:relative;min-height:450px}
+    .slide{
+      position:absolute;inset:0;opacity:0;transform:translateX(20px) scale(.98);
+      transition:all .35s ease;display:grid;place-items:center;padding:36px
+    }
+    .slide.active{opacity:1;transform:translateX(0) scale(1)}
+    .slide .inner{
+      width:min(900px,100%);background:var(--card);
+      border:1px solid var(--line);border-radius:18px;
+      padding:26px;box-shadow:var(--shadow)
+    }
+    .slide h2{font-size:24px;margin-bottom:8px}
+    .slide p{margin:6px 0}
+    .slide ul{margin-top:10px;font-size:17px}
+
+    .progress{height:6px;background:#d1fae5}
+    .progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--secondary))}
+
+    .nav{display:flex;justify-content:space-between;gap:8px;margin-top:10px}
+    .nav button{flex:1}
+
+    /* To-do */
+    .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    @media (max-width:900px){.cols{grid-template-columns:1fr}}
+    .todo h3{display:flex;align-items:center;gap:8px}
+    .phase{border-left:6px solid var(--primary);padding-left:10px}
+    .kpis .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    @media (max-width:700px){.kpis .grid{grid-template-columns:1fr}}
+    .kpis input{width:100%;padding:10px;font-size:16px;border:1px solid var(--line);border-radius:10px}
+
+    .pill{
+      display:inline-block;background:#ecfdf5;border:1px solid #d1fae5;color:#065f46;
+      padding:5px 12px;border-radius:999px;font-size:14px
+    }
+
+    details{background:transparent;border:1px solid var(--line);border-radius:12px;padding:10px;margin:10px 0}
+    details > summary{cursor:pointer;font-weight:600;color:var(--primary)}
+
+    table.matrix{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}
+    .matrix th,.matrix td{padding:6px;border-bottom:1px solid var(--line);text-align:left}
+
+    /* Dark Mode */
     @media (prefers-color-scheme: dark){
       :root{
-        --bg:#0b1211;
-        --card:#0e1716;
-        --line:#1f2a2a;
-        --text:#e8f1ef;
-        --muted:#9cb0ad;
-        --shadow:0 24px 56px rgba(0,0,0,.55);
+        --bg:#0b1413;--card:#0f1a19;--line:#143630;
+        --text:#e7fffb;--muted:#9fb3bd;--accent:#2dd4bf
       }
+      .pill{background:#0c2e2a;border-color:#155e57;color:#bfffea}
     }
-    *,*::before,*::after{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:18px/1.65 system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial,sans-serif}
-    a{color:var(--primary);text-decoration:none;border-bottom:1px solid transparent}
-    a:hover{border-color:var(--primary)}
-    .wrap{max-width:1120px;margin:28px auto;padding:0 18px}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
-    .head{padding:26px 28px;border-bottom:1px solid var(--line);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
-    h1{margin:0;font-size:30px;letter-spacing:.2px}
-    .sub{color:var(--muted);font-size:14px}
-    /* Config */
-    .cfg{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 16px;background:linear-gradient(0deg,#f2fbf8,transparent)}
-    .cfg label{font-size:12px;color:var(--muted)}
-    .cfg input{width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--text)}
-    .toolbar{display:flex;gap:10px;align-items:center;padding:14px 16px;border-top:1px dashed var(--line);background:rgba(34,197,94,.06)}
-    .btn{appearance:none;border:2px solid var(--primary);background:var(--primary);color:#fff;padding:11px 16px;border-radius:999px;font-weight:800;cursor:pointer;letter-spacing:.2px}
-    .btn.alt{background:transparent;color:var(--primary)}
-    .btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-    /* Sections */
-    .section{margin-top:18px}
-    .section>h2{margin:0;padding:18px 20px;border-bottom:1px solid var(--line);font-size:21px}
-    .inner{padding:18px 20px}
-    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .tag{display:inline-block;background:rgba(15,118,110,.12);color:var(--primary);padding:4px 10px;border-radius:999px;font-size:12px;border:1px solid var(--line)}
-    ul{margin:8px 0 0 18px}
-    table{width:100%;border-collapse:collapse}
-    th,td{padding:9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-    details{border:1px solid var(--line);border-radius:12px;padding:10px;background:linear-gradient(0deg,rgba(14,165,165,.06),transparent)}
-    summary{cursor:pointer;font-weight:800;color:var(--primary)}
-    .note{font-size:13.5px;color:var(--muted)}
-    .callout{border-left:6px solid var(--secondary);padding:10px 12px;background:linear-gradient(0deg,rgba(34,197,94,.08),transparent);border-radius:12px}
-    /* KPI pills */
-    .pills{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;padding:16px}
-    .pill{border:1px dashed var(--line);border-radius:12px;padding:12px;background:rgba(15,118,110,.05)}
-    .pill .k{font-size:12px;color:var(--muted);margin-bottom:6px}
-    .pill .v{font-weight:900}
-    /* Timeline cards */
-    .timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .phase h3{margin:6px 0 4px}
-    .phase .hdr{display:flex;align-items:center;gap:8px}
-    .badge{font-size:12px;color:#fff;background:var(--primary);padding:3px 10px;border-radius:999px}
-    .checklist li{margin:.25em 0}
-    /* “Fair Parken”-Look, aber branchenneutral */
-    .escalation-module .header{padding:20px 24px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:12px}
-    .escalation-module h3{margin:8px 0;font-size:16px}
+
     /* Print */
     @media print{
-      html,body{background:#fff}
-      .wrap{max-width:820px}
-      .cfg,.toolbar{display:none!important}
-      .card{box-shadow:none;border-color:#ddd}
-      h1{font-size:26px}
-      .timeline{grid-template-columns:1fr}
-      .grid-2,.grid-3{grid-template-columns:1fr}
-      .section{page-break-inside:avoid}
+      header{position:static}
+      .tabs,.nav,.btn-print{display:none!important}
+      .panel{display:block!important}
+      .slide{position:relative;opacity:1;transform:none;page-break-inside:avoid}
+      .slide .inner{box-shadow:none}
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card" role="region" aria-labelledby="doc-title">
-      <header class="head">
-        <h1 id="doc-title">90-Tage-Plan – Customer Success (branchenübergreifend)</h1>
-        <div class="sub">für <span data-token="role">Customer Success / Key Account</span> • <span data-token="name">Lukas Bach</span></div>
-      </header>
-
-      <!-- Konfiguration (ohne Unternehmens-Feld) -->
-      <div class="cfg" aria-label="Konfiguration">
-        <div>
-          <label for="iName">Dein Name</label>
-          <input id="iName" value="Lukas Bach" />
-        </div>
-        <div>
-          <label for="iRole">Rolle (z. B. Customer Success Manager)</label>
-          <input id="iRole" value="Customer Success / Key Account" />
-        </div>
-        <div>
-          <label for="iContact">Kontakt (optional)</label>
-          <input id="iContact" value="[Telefon / E-Mail / LinkedIn]" />
-        </div>
+  <div class="page">
+    <header>
+      <div>
+        <h1>Ramp‑up‑Plan (90 Tage)</h1>
+        <div class="sub">Lukas Bach · Customer Success Mindset · Prozessoptimierung · Digitalisierung</div>
       </div>
-      <div class="toolbar">
-        <button class="btn" onclick="window.print()" aria-label="Drucken oder als PDF speichern">Drucken / als PDF speichern</button>
-        <button class="btn alt" id="btnApply" aria-label="Konfiguration übernehmen">Übernehmen</button>
-        <button class="btn alt" id="btnSave" aria-label="Dieses Dokument als HTML speichern">Als HTML speichern</button>
-        <span class="note">Hinweis: „Übernehmen“ füllt die Platzhalter im Dokument. Kein Unternehmensfeld vorhanden – universell einsetzbar.</span>
-      </div>
+      <div class="spacer"></div>
+      <button class="btn ghost" id="btnViewSlides" title="Präsentation anzeigen (P)">🖥️ Präsentation</button>
+      <button class="btn ghost" id="btnViewTodo" title="To-do/Fahrplan anzeigen (T)">📋 Fahrplan</button>
+      <button class="btn ghost btn-print" onclick="window.print()" title="Als PDF drucken">🖨️ PDF</button>
+    </header>
+   
+    <!-- Tabs (visual state only; buttons above switch programmatically) -->
+    <div class="tabs" aria-label="Ansichten">
+      <div class="tab"><input type="radio" name="view" id="tab1" checked><label for="tab1">🖥️ Präsentation</label></div>
+      <div class="tab"><input type="radio" name="view" id="tab2"><label for="tab2">📋 Fahrplan</label></div>
+    </div>
 
-      <!-- Leitkennzahlen -->
-      <section class="section">
-        <h2>Leitkennzahlen (Erfolg nach 90 Tagen sichtbar machen)</h2>
-        <div class="pills" role="list">
-          <div class="pill" role="listitem"><div class="k">Time-to-First-Value (TTFV)</div><div class="v">↓ 30–50 %</div></div>
-          <div class="pill" role="listitem"><div class="k">Aktive Nutzung / Adoption</div><div class="v">+15–25 pp</div></div>
-          <div class="pill" role="listitem"><div class="k">At-Risk-Liste abgearbeitet</div><div class="v">100 %</div></div>
-          <div class="pill" role="listitem"><div class="k">CSAT / NPS</div><div class="v">+10 Punkte</div></div>
-          <div class="pill" role="listitem"><div class="k">Upsell / Expansion</div><div class="v">2–3 Pilot-Cases</div></div>
-        </div>
-      </section>
+    <!-- Panel: Präsentation / Slides -->
+    <section class="panel active" id="panelSlides" aria-labelledby="tab1">
+      <div class="card deck">
+        <div class="progress" aria-hidden="true"><div class="bar" id="progressBar"></div></div>
+        <div class="slides" id="slides">
 
-      <!-- Phasen 30/60/90 -->
-      <section class="section">
-        <h2>Phasenplan 30 / 60 / 90 Tage</h2>
-        <div class="inner timeline">
-          <div class="card phase">
+          <article class="slide active" data-title="Intro">
             <div class="inner">
-              <div class="hdr"><span class="badge">Tage 1–30</span><h3>Orientierung &amp; Grundlagen</h3></div>
-              <p class="note">Ziel: Kundenkontext, Datenquellen, erste Quick Wins.</p>
-              <div class="grid-2">
-                <div>
-                  <strong>Schwerpunkte</strong>
-                  <ul class="checklist">
-                    <li>Produkt/Service-Deep-Dive, Use-Cases je Segment</li>
-                    <li>Top-Kundenkontakte/Calls analysieren (Tickets, Aufzeichnungen)</li>
-                    <li>Risk-Radar & Health-Score-Signale definieren</li>
-                    <li>Onboarding-Blueprint & Checklisten aktualisieren</li>
-                    <li>Stakeholder-Map & Eskalationswege festlegen</li>
-                  </ul>
-                </div>
-                <div>
-                  <strong>Deliverables</strong>
-                  <ul class="checklist">
-                    <li>1-Pager Onboarding (TTFV-Meilensteine)</li>
-                    <li>„At-Risk“-Liste inkl. Next Best Action</li>
-                    <li>QBR/EBR-Vorlage v1</li>
-                    <li>De-eskalations-Leitfaden (branchenneutral)</li>
-                  </ul>
-                </div>
-              </div>
+              <h2>Ramp‑up‑Plan: Die ersten 90 Tage</h2>
+              <p class="small">Ziel: Schnell wirksam werden, Vertrauen gewinnen und Digitalisierung praxisnah verankern – branchenneutral einsetzbar.</p>
+              <div class="pill">Fokus: Team · Kund:innen · Prozesse · Digital</div>
             </div>
-          </div>
+          </article>
 
-          <div class="card phase">
+          <article class="slide" data-title="Phase 1 – Orientierung (Woche 1–4)">
             <div class="inner">
-              <div class="hdr"><span class="badge">Tage 31–60</span><h3>Übernahme &amp; messbare Wirkung</h3></div>
-              <p class="note">Ziel: Eigenes Portfolio, Prozesse glätten, Kennzahlen bewegen.</p>
-              <div class="grid-2">
-                <div>
-                  <strong>Schwerpunkte</strong>
-                  <ul class="checklist">
-                    <li>Adoption-Journeys pilotieren (4-Wochen-Sequenzen)</li>
-                    <li>Health-Playbooks produktiv nutzen</li>
-                    <li>CROSS/UP-Hypothesen testen (Value-Stories)</li>
-                    <li>Support→Success-Handover standardisieren</li>
-                  </ul>
-                </div>
-                <div>
-                  <strong>Deliverables</strong>
-                  <ul class="checklist">
-                    <li>Adoption-Cohorts mit Base-/Zielwerten</li>
-                    <li>3 Fallstudien (vorher/nachher, Aufwand→Nutzen)</li>
-                    <li>EBR/QBR bei Top-Kunden</li>
-                    <li>„Voice of Customer“-Synthese</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card phase">
-            <div class="inner">
-              <div class="hdr"><span class="badge">Tage 61–90</span><h3>Skalierung &amp; Verstetigung</h3></div>
-              <p class="note">Ziel: Playbooks verankern, Education skalieren, Roadmap beeinflussen.</p>
-              <div class="grid-2">
-                <div>
-                  <strong>Schwerpunkte</strong>
-                  <ul class="checklist">
-                    <li>Playbooks → Wissensdatenbank (How-tos, Videos)</li>
-                    <li>Enge Schleife mit Produkt/Ops (Top-Kundenwünsche)</li>
-                    <li>Renewal-Forecast & Frühindikatoren</li>
-                    <li>Customer Education (Webinare, Academy-Artikel)</li>
-                  </ul>
-                </div>
-                <div>
-                  <strong>Deliverables</strong>
-                  <ul class="checklist">
-                    <li>CS-Operating-Rhythm (Weeklies, Reviews, Dashboards)</li>
-                    <li>Playbook-Set v1 (Onboarding, Adoption, Escalation)</li>
-                    <li>Roadmap-Feedback (Impact × Aufwand)</li>
-                    <li>Plan 90→180 Tage mit KPI-Zielen</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Eskalationsmodul (Look & Feel wie zuvor, neutral formuliert) -->
-      <section class="section card escalation-module" aria-label="Eskalation & De-eskalation">
-        <div class="header">
-          <h2 style="margin:0;font-size:20px;color:var(--primary)">Eskalationsmatrix & De-eskalation (branchenneutral)</h2>
-          <span class="note">Frontline-Leitfaden • v1.1</span>
-        </div>
-
-        <div class="inner">
-          <!-- KPI Row -->
-          <div class="pills" style="padding:0 0 16px 0">
-            <div class="pill"><div class="k">Ziel-KPI</div><div class="v">−25 % Eskalationsquote</div></div>
-            <div class="pill"><div class="k">SLA</div><div class="v">Erstantwort &lt; 24 h</div></div>
-            <div class="pill"><div class="k">Qualität</div><div class="v">100 % Beleg-/Faktencheck</div></div>
-            <div class="pill"><div class="k">Transparenz</div><div class="v">Status-Update fix</div></div>
-            <div class="pill"><div class="k">Lösung</div><div class="v">Klarer Nächster Schritt</div></div>
-          </div>
-
-          <div class="grid-2">
-            <div>
-              <h3>Top-Eskalationen (neutral)</h3>
+              <h2>Phase 1 – Orientierung (Woche 1–4)</h2>
               <ul>
-                <li>Leistung/Erwartung weicht ab (Scope, Qualität, Termin)</li>
-                <li>Prozess-/Technikstörung (Incident, App/Portal/Hardware)</li>
-                <li>Preis/Vertrag/Abrechnung (Transparenz, Konditionen)</li>
-                <li>Datenschutz/Compliance (Informationspflichten, Rechte)</li>
-                <li>Stakeholder-Wechsel / Ownership unklar</li>
-                <li>Ton kippt (Drohungen/Beleidigungen)</li>
+                <li><strong>Kennenlernen:</strong> Team, Hauptkund:innen, Schnittstellen (Fachbereiche wie Technik/Vertrieb/Finanzen).</li>
+                <li><strong>Systeme:</strong> CRM, ERP, Ticket‑/Workflow‑Systeme und Vorlagenlandschaft.</li>
+                <li><strong>Beobachten:</strong> Gespräche anhören, Vorgänge analysieren, Muster erkennen.</li>
+                <li><strong>Quick Wins:</strong> Listen vereinfachen, Vorlagen & Feedbackkanal starten.</li>
               </ul>
-
-              <h3 style="margin-top:14px">Kulanz-/Entscheidungsleitplanke</h3>
-              <table aria-label="Kulanzmatrix">
-                <thead><tr><th>Fall</th><th>Maßnahme</th></tr></thead>
-                <tbody>
-                  <tr><td>Erstfall, geringe Abweichung, triftiger Grund</td><td>Reduktion/Kulanz erwägen</td></tr>
-                  <tr><td>Nachweisbarer System-/Prozessfehler</td><td>Storno/Neuaufsetzen/Erstattung</td></tr>
-                  <tr><td>Wiederholte/klare Verstöße</td><td>Regelkonforme Bestätigung</td></tr>
-                  <tr><td>Sensible Fälle (Barrierefreiheit/Notfall)</td><td>Wohlwollende Prüfung</td></tr>
-                </tbody>
-              </table>
+              <p class="small">Ergebnis: Unternehmenssprache verstehen, verlässliche Ansprechperson werden.</p>
             </div>
+          </article>
 
-            <div>
-              <h3>Gesprächsbausteine (LEAP)</h3>
-              <details open>
-                <summary>1) Anerkennen & Struktur</summary>
-                <div class="note" style="margin-top:8px">
-                  „Ich sehe, dass die Situation belastend ist. Damit ich konkret helfen kann, notiere ich kurz die Fakten (Account/Datum/Kontext) und prüfe die Nachweise.“
-                </div>
-              </details>
-              <details>
-                <summary>2) Grundlage erklären</summary>
-                <div class="note" style="margin-top:8px">
-                  „Unsere Bewertung stützt sich auf die vereinbarten Rahmenbedingungen und dokumentierte Daten. Ich gleiche das jetzt mit Ihren Angaben ab.“
-                </div>
-              </details>
-              <details>
-                <summary>3) Optionen anbieten</summary>
-                <div class="note" style="margin-top:8px">
-                  „Ich eröffne eine formelle Prüfung. Senden Sie bitte relevante Belege bis [Datum]. Zahlung/Entscheidung unter Vorbehalt ist möglich – die Prüfung läuft dennoch.“
-                </div>
-              </details>
-              <details>
-                <summary>4) Grenzen & Ton</summary>
-                <div class="note" style="margin-top:8px">
-                  „Ich möchte gern helfen. Wenn es beleidigend wird, kann ich das Gespräch nicht fortsetzen. Sprechen wir sachlich weiter – ja?“
-                </div>
-              </details>
+          <article class="slide" data-title="Phase 2 – Übernahme (Woche 5–8)">
+            <div class="inner">
+              <h2>Phase 2 – Übernahme (Woche 5–8)</h2>
+              <ul>
+                <li><strong>Verantwortung:</strong> Erste Accounts/Teilbereiche eigenständig führen, Eskalationen lösen.</li>
+                <li><strong>Kommunikation:</strong> Teamrunden & offene Feedbackkultur etablieren.</li>
+                <li><strong>Digitalisierung:</strong> praxistaugliche Impulse pilotieren (Papier sparen, Workflows vereinfachen).</li>
+              </ul>
+              <p class="small">Ergebnis: Operativ sattelfest; erste sichtbare Erfolge in Bindung & Qualität.</p>
             </div>
-          </div>
+          </article>
+
+          <article class="slide" data-title="Phase 3 – Skalierung (Woche 9–12)">
+            <div class="inner">
+              <h2>Phase 3 – Skalierung (Woche 9–12)</h2>
+              <ul>
+                <li><strong>Führung & Steuerung:</strong> KPIs für Service-/Prozessqualität, Durchlaufzeiten & Zufriedenheit.</li>
+                <li><strong>Strategie:</strong> Kundenbindung stärken, Eskalationen minimieren, Digital‑Tools ausrollen.</li>
+                <li><strong>Vernetzung:</strong> Leitung, Fachbereiche & Schnittstellen eng abstimmen.</li>
+              </ul>
+              <p class="small">Ergebnis: Als anerkannte Führungskraft etabliert; Vertrauen intern & extern.</p>
+            </div>
+          </article>
+
+          <article class="slide" data-title="KPIs & Erfolgsmessung">
+            <div class="inner">
+              <h2>KPIs & Erfolgsmessung</h2>
+              <ul>
+                <li>Vorgänge: <em>Ø‑Laufzeit</em>, <em>Wiederholungsquote</em>, <em>Erstlösungsrate</em>.</li>
+                <li>Kund:innen: <em>CSAT/NPS</em>, Eskalationen/Monat, Abwanderungsrisiken.</li>
+                <li>Team: Termineinhaltung, Backlog‑Abbau, Qualität der Dokumentationen.</li>
+              </ul>
+              <p class="small">Visualisierung: Monatsreport (1‑Pager) + Quartalsreview mit Empfehlungen.</p>
+            </div>
+          </article>
+
+          <article class="slide" data-title="Digital‑Impulse (Praxis)">
+            <div class="inner">
+              <h2>Digital‑Impulse (Praxis)</h2>
+              <ul>
+                <li>Digitale Tickets & Nachweise: Weniger Rückfragen, bessere Nachvollziehbarkeit.</li>
+                <li>Mobile Freigaben & digitale Signatur: Moderner Eindruck, schnellere Abläufe.</li>
+                <li>Vorlagen/Checklisten: Einheitliche Qualität, schnelleres Onboarding.</li>
+              </ul>
+              <p class="small">Prinzip: „Starten, eng begleiten, Feedback integrieren, dann skalieren.“</p>
+            </div>
+          </article>
+
+          <!-- De‑eskalation Slide (branchenneutral) -->
+          <article class="slide" data-title="De‑eskalation (LEAP)">
+            <div class="inner">
+              <h2>De‑eskalation (LEAP)</h2>
+              <ul>
+                <li><strong>Labeln:</strong> „Ich sehe, dass Sie verärgert sind.“</li>
+                <li><strong>Empathie + Grenzen:</strong> „Ich kläre das fair – ohne Rechtsberatung, mit vollständiger Prüfung.“</li>
+                <li><strong>Ankern/Ask:</strong> Vorgangs‑/Referenznummer, Datum, Ort/Abteilung, relevante Belege (z. B. Quittungen, System‑Logs, Bestätigungen, Fotos/Screenshots).</li>
+                <li><strong>Vorschlag:</strong> Prüfung eröffnen, Frist & Rückkanal nennen, Status transparent halten.</li>
+              </ul>
+              <p class="small">Typische Fälle: Unklare Regeln, technische Störung, Fristen/Zahlung, Zuständigkeit unklar, Datenschutzanfrage.</p>
+            </div>
+          </article>
+
+          <!-- 3‑Modul‑Training Slide -->
+          <article class="slide" data-title="3‑Modul‑Training">
+            <div class="inner">
+              <h2>3‑Modul‑Training – Frontline & Qualität</h2>
+              <ul>
+                <li><strong>Modul 1 – Gespräch & De‑eskalation:</strong> Leitfaden, Rollenspiele, Telefon/E‑Mail‑Muster.</li>
+                <li><strong>Modul 2 – Fakten & Nachweise:</strong> Belegstandards, Technik‑Check, Dokumentation.</li>
+                <li><strong>Modul 3 – Entscheidung & Kulanz:</strong> Kulanzmatrix, Eskalationswege, KPIs & Review.</li>
+              </ul>
+              <p class="small">Erfolgsmessung: −25 % Eskalationsquote, 100 % Beleg‑Check dokumentiert, Erstantwort &lt; 24 h.</p>
+            </div>
+          </article>
+
+          <article class="slide" data-title="Abschluss & Nächste Schritte">
+            <div class="inner">
+              <h2>Abschluss nach 90 Tagen</h2>
+              <ul>
+                <li>Review mit Leitung: Ergebnisse, Learnings, Roadmap (Q2/Q3).</li>
+                <li>Top‑3 Hebel weiter priorisieren (Kund:innen · Team · Prozess).</li>
+                <li>Skalierungsplan & Verantwortlichkeiten festziehen.</li>
+              </ul>
+              <p class="small">Profil: <a href="https://lukasbach585-boop.github.io/Lebenslauf." target="_blank" rel="noopener">Online‑Lebenslauf</a></p>
+            </div>
+          </article>
+
         </div>
-      </section>
+        <div class="nav">
+          <button class="btn" id="prev">← Zurück</button>
+          <button class="btn" id="next">Weiter →</button>
+        </div>
+      </div>
+    </section>
 
-      <!-- Stakeholder & RACI -->
-      <section class="section card">
-        <h2>Stakeholder &amp; RACI (branchenübergreifend)</h2>
-        <div class="inner grid-2">
+    <!-- Panel: Fahrplan / To-do -->
+    <section class="panel" id="panelTodo" aria-labelledby="tab2">
+      <div class="cols">
+        <!-- Phase 1 -->
+        <div class="card todo phase" style="border-color:#22c55e">
+          <h2>Phase 1 – Orientierung (Woche 1–4)</h2>
+          <h3>Checkliste</h3>
+          <ul>
+            <li><label><input type="checkbox" data-id="p1-team"> Team & Hauptkund:innen kennenlernen (Jour fixe & Shadowing)</label></li>
+            <li><label><input type="checkbox" data-id="p1-tools"> Systeme/Prozesse verstehen (CRM, ERP, Ticket/Workflow)</label></li>
+            <li><label><input type="checkbox" data-id="p1-listen"> Listen/Vorlagen sichten und vereinfachen</label></li>
+            <li><label><input type="checkbox" data-id="p1-feedback"> Feedbackkanal (kurze wöchentliche Umfrage) einrichten</label></li>
+          </ul>
+          <p class="small">Ziel: Vertrauen aufbauen, Unternehmenssprache lernen.</p>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="card todo phase" style="border-color:#16a34a">
+          <h2>Phase 2 – Übernahme (Woche 5–8)</h2>
+          <h3>Checkliste</h3>
+          <ul>
+            <li><label><input type="checkbox" data-id="p2-accounts"> Erste Accounts/Teilbereiche eigenverantwortlich betreuen</label></li>
+            <li><label><input type="checkbox" data-id="p2-standups"> Wöchentliche Teamrunde/Stand‑up etablieren</label></li>
+            <li><label><input type="checkbox" data-id="p2-impulse"> Digital‑Impulse als Pilot starten</label></li>
+            <li><label><input type="checkbox" data-id="p2-eskal"> Eskalationen strukturiert lösen (Vorlage & Kommunikationsleitfaden)</label></li>
+          </ul>
+          <p class="small">Ziel: Operativ sattelfest; erste sichtbare Erfolge.</p>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="card todo phase" style="border-color:#0f766e">
+          <h2>Phase 3 – Skalierung (Woche 9–12)</h2>
+          <h3>Checkliste</h3>
+          <ul>
+            <li><label><input type="checkbox" data-id="p3-kpi"> KPI‑Set definieren (Erstlösung, Durchlaufzeit, Wiederholungen, CSAT/NPS)</label></li>
+            <li><label><input type="checkbox" data-id="p3-report"> Monatsreport (1‑Pager) & Quartalsreview vorbereiten</label></li>
+            <li><label><input type="checkbox" data-id="p3-schnitt"> Schnittstellenabstimmung mit Leitung & Fachbereichen</label></li>
+            <li><label><input type="checkbox" data-id="p3-roadmap"> Roadmap für Q2/Q3 mit Verantwortlichkeiten</label></li>
+          </ul>
+          <p class="small">Ziel: Als Führungskraft etabliert; Vertrauen intern & extern.</p>
+        </div>
+      </div>
+
+      <div class="card kpis" style="margin-top:14px">
+        <h2>KPI‑Notizblock</h2>
+        <p class="small">Werte hier eintragen – bleiben lokal im Browser (localStorage).</p>
+        <div class="grid">
+          <div><label class="small">Ø Vorgangs‑Laufzeit (Tage)<br><input type="number" step="0.1" id="kpi-a"></label></div>
+          <div><label class="small">Erstlösungsrate (%)<br><input type="number" step="1" id="kpi-b"></label></div>
+          <div><label class="small">Wiederholungsquote (%)<br><input type="number" step="0.1" id="kpi-c"></label></div>
+          <div><label class="small">CSAT / NPS<br><input type="text" id="kpi-d" placeholder="z. B. 4,6 / +38"></label></div>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <button class="btn" id="resetTodo">Reset Checklisten</button>
+          <button class="btn" id="resetKpi">Reset KPIs</button>
+        </div>
+      </div>
+
+      <!-- Eskalationsmatrix & De‑eskalation (branchenneutral) -->
+      <div class="card" style="margin-top:14px">
+        <h2>Eskalationsmatrix & De‑eskalation</h2>
+        <p class="small">Leitfaden für Frontline • Ziel: −25 % Eskalationsquote · Erstantwort &lt; 24 h · 100 % Beleg‑Check dokumentiert</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1.2fr;gap:16px">
           <div>
-            <strong>Stakeholder-Map</strong>
+            <h3>Typische Eskalationen</h3>
             <ul>
-              <li>Customer Success (Owner für Adoption/Erfolg)</li>
-              <li>Support/Operations (Incidents, How-tos)</li>
-              <li>Sales/Account (Renewal, Expansion)</li>
-              <li>Product/Engineering (Roadmap-Feedback)</li>
-              <li>Legal/Compliance/Finance (Verträge, Datenschutz, Abrechnung)</li>
+              <li>Unklare Regeln/Kommunikation</li>
+              <li>Technischer Fehler/Systemausfall</li>
+              <li>Fristen/Zeitfenster strittig</li>
+              <li>Geringe Abweichung (geringer Toleranzbereich)</li>
+              <li>Anfragende Person ≠ Verantwortliche Stelle</li>
+              <li>Datenschutzanfrage</li>
+              <li>Zahlungs‑/Mahnthemen</li>
             </ul>
-          </div>
-          <div>
-            <strong>RACI-Mini</strong>
-            <table>
-              <thead><tr><th>Thema</th><th>R</th><th>A</th><th>C</th><th>I</th></tr></thead>
+
+            <h3 style="margin-top:12px">Kulanzmatrix</h3>
+            <table class="matrix">
+              <thead><tr><th>Fall</th><th>Maßnahme</th></tr></thead>
               <tbody>
-                <tr><td>Onboarding-Blueprint</td><td>CS</td><td>CS Lead</td><td>Ops, Product</td><td>Sales</td></tr>
-                <tr><td>Eskalationsfall</td><td>CS</td><td>CS Lead</td><td>Support, Legal</td><td>Sales</td></tr>
-                <tr><td>QBR/EBR</td><td>CS</td><td>CS Lead</td><td>Sales, Product</td><td>Exec</td></tr>
+                <tr><td>Erstverstoß, geringe Abweichung</td><td>Reduktion/Ermahnung</td></tr>
+                <tr><td>Technikstörung belegt</td><td>Storno/Reduktion</td></tr>
+                <tr><td>Regelwerk unklar</td><td>QS‑Prüfung + Kulanz</td></tr>
+                <tr><td>Wiederholungsfall klar</td><td>Bestätigung</td></tr>
+                <tr><td>Sensible Fälle (Gesundheit/Notfall)</td><td>Einzelfall‑Kulanz</td></tr>
               </tbody>
             </table>
           </div>
-        </div>
-      </section>
 
-      <!-- Branchen-Playbooks -->
-      <section class="section card">
-        <h2>Branchen-Beispiele (übertragbare Playbooks)</h2>
-        <div class="inner grid-2">
-          <details>
-            <summary>SaaS / B2B-Software</summary>
-            <ul>
-              <li><strong>Quick Wins:</strong> 3-Schritt-Onboarding (Setup → erstes Aha → Dashboard); In-App-Check-ins; Help-Center-Lücken schließen</li>
-              <li><strong>Daten:</strong> Aktivierungs-Events, DAU/WAU, Feature-Adoption, Support-Tags</li>
-              <li><strong>Risiken:</strong> Shadow-IT, fehlender Champion → Champion-Programm</li>
-            </ul>
-          </details>
-          <details>
-            <summary>E-Commerce / Marketplace</summary>
-            <ul>
-              <li><strong>Quick Wins:</strong> Retouren-/Claim-Pfad verkürzen, SLA-Mailvorlagen, Self-Service-Artikel</li>
-              <li><strong>Daten:</strong> Conversion-Funnel, Retourenquote, Lieferzeit-SLA, NPS nach Kontakt</li>
-              <li><strong>Risiken:</strong> Carrier-Abhängigkeiten → Proaktive Status-Updates, Kulanzmatrix</li>
-            </ul>
-          </details>
-          <details>
-            <summary>Manufacturing / Hardware / B2B-Services</summary>
-            <ul>
-              <li><strong>Quick Wins:</strong> Service-/Wartungsplan sichtbar machen, Ersatzteil-SLA, Übergabe Support→Field-Service</li>
-              <li><strong>Daten:</strong> MTTR, Ersatzteil-Leadtime, Wartungsfenster, Vertrags-Erfüllung</li>
-              <li><strong>Risiken:</strong> Vor-Ort-Zugänge/Sicherheit → Standard-Checklisten</li>
-            </ul>
-          </details>
-          <details>
-            <summary>Healthcare / Education / Services</summary>
-            <ul>
-              <li><strong>Quick Wins:</strong> No-Show-Prävention, klare Aufklärungs-Mails, Mikro-Trainings</li>
-              <li><strong>Daten:</strong> Teilnahmequoten, Outcome-Proxies, Feedback-Scores</li>
-              <li><strong>Risiken:</strong> Datenschutz/Einwilligung → klare Infoflows</li>
-            </ul>
-          </details>
-        </div>
-      </section>
+          <div>
+            <h3>Gesprächsbausteine (LEAP)</h3>
 
-      <!-- Discovery & QBR -->
-      <section class="section card">
-        <h2>Discovery &amp; QBR-Vorbereitung</h2>
-        <div class="inner grid-2">
-          <div>
-            <strong>10 Kernfragen (Discovery)</strong>
-            <ol>
-              <li>Top-3 Ziele in 6–12 Monaten?</li>
-              <li>Kritischster Engpass im Betrieb?</li>
-              <li>Nutzergruppen & Nutzen je Persona?</li>
-              <li>Welche Kennzahlen zählen?</li>
-              <li>Welche Risiken kurzfristig?</li>
-              <li>Erfolg in 90 Tagen = …?</li>
-              <li>Champions/Entscheider?</li>
-              <li>Integrationen/Abhängigkeiten?</li>
-              <li>Welche Trainings sind „low effort / high impact“?</li>
-              <li>Bevorzugte Kommunikationskanäle?</li>
-            </ol>
-          </div>
-          <div>
-            <strong>QBR/EBR-Struktur (1 Seite)</strong>
-            <ul>
-              <li>Ergebnisse seit letztem Termin (Kennzahlen, Highlights)</li>
-              <li>Roadmap-Abgleich & Prioritäten</li>
-              <li>Risiken & Gegenmaßnahmen</li>
-              <li>Opportunities (Expansion/Referenz)</li>
-              <li>Nächste Schritte & Verantwortliche</li>
-            </ul>
+            <details>
+              <summary>1) Anerkennen & Struktur</summary>
+              <div class="small" style="margin-top:8px">
+                „Ich verstehe, dass das ärgerlich ist. Damit ich helfen kann, notiere ich Referenznummer, Datum und betroffene Einheit und prüfe Ihre Nachweise.“
+              </div>
+            </details>
+
+            <details>
+              <summary>2) Grundlage erklären</summary>
+              <div class="small" style="margin-top:8px">
+                „Die Entscheidung basiert auf den gültigen Bedingungen/Prozessen und den vorliegenden Daten. Ich gleiche das jetzt mit Ihren Angaben ab.“
+              </div>
+            </details>
+
+            <details>
+              <summary>3) Optionen anbieten</summary>
+              <div class="small" style="margin-top:8px">
+                „Ich eröffne eine formelle Prüfung. Senden Sie bitte Belege bis [Datum]. Eine Zahlung <em>unter Vorbehalt</em> ist möglich – die Prüfung läuft dennoch.“
+              </div>
+            </details>
+
+            <details>
+              <summary>4) Grenzen & Ton</summary>
+              <div class="small" style="margin-top:8px">
+                „Ich möchte Ihnen gern helfen. Wenn es persönlich wird, kann ich das Gespräch nicht fortsetzen. Sprechen wir sachlich weiter – ja?“
+              </div>
+            </details>
           </div>
         </div>
-      </section>
 
-      <!-- Risiken -->
-      <section class="section card">
-        <h2>Risiken & Gegenmaßnahmen</h2>
-        <div class="inner">
-          <table>
-            <thead><tr><th>Risiko</th><th>Frühsignal</th><th>Maßnahme</th><th>Owner</th></tr></thead>
-            <tbody>
-              <tr><td>Adoption stagniert</td><td>Logins ↓, Feature-Nutzung gering</td><td>Zielgerichtete Journeys, 1:Many-Trainings, Champion fördern</td><td>CS</td></tr>
-              <tr><td>Unklare Erwartung</td><td>„Scope-Diskussionen“ häufen sich</td><td>Kickoff-Definition, Success Plan schriftlich bestätigen</td><td>CS + Sales</td></tr>
-              <tr><td>Technik-Engpässe</td><td>Wiederholte Incidents</td><td>Priorisierte Bug-List, Status-Updates, Post-Mortem teilen</td><td>CS + Support</td></tr>
-              <tr><td>Renewal-Risiko</td><td>Low Health, Stakeholder-Wechsel</td><td>Executive-Briefing, ROI-Case, Alternativen/Phasen</td><td>CS + AM</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+        <details>
+          <summary>Telefon‑Skript (90 Sekunden)</summary>
+          <div class="small" style="margin-top:8px">
+            „Ich verstehe Ihren Ärger. Damit ich konkret helfen kann, notiere ich die Referenznummer, das Datum und die betroffene Einheit. Unsere Bewertung stützt sich auf die gültigen Bedingungen und die verfügbaren Daten. Ich starte für Sie jetzt die Prüfung und hinterlege Ihren Widerspruch. Wenn Sie Nachweise haben (z. B. Quittungen, System‑Logs, Bestätigungen, Fotos/Screenshots), senden Sie diese bitte bis [Datum] mit Referenz im Betreff. Ich melde mich, sobald das Ergebnis vorliegt.“
+          </div>
+        </details>
 
-      <!-- Vorlagen -->
-      <section class="section card">
-        <h2>Vorlagen (kurz & praxistauglich)</h2>
-        <div class="inner grid-2">
-          <details>
-            <summary>Kickoff-Mail (Ankündigung)</summary>
-            <div class="callout">
-              <strong>Betreff:</strong> Start unseres gemeinsamen Erfolgsplans<br/>
-              Hallo [Kontakt],<br/>
-              kurz & knackig: Wir starten mit Setup → erstem Nutzen → Review nach 2 Wochen.<br/>
-              <ul>
-                <li>Termin Kickoff: [Datum/Uhrzeit]</li>
-                <li>Ziele 90 Tage: [Z1], [Z2], [Z3]</li>
-                <li>Bitte vorbereiten: [Daten/Logins/Stakeholder]</li>
-              </ul>
-              Beste Grüße – <span data-token="name2">Lukas Bach</span>
-            </div>
-          </details>
-          <details>
-            <summary>De-eskalations-Antwort (kurz)</summary>
-            <div class="callout">
-              Guten Tag [Name],<br/>
-              danke für Ihre Rückmeldung. Ich sehe, dass die Situation ärgerlich ist.<br/>
-              Damit wir das fair klären, gleiche ich Ihre Angaben mit den vorliegenden Nachweisen ab.<br/>
-              Falls vorhanden, senden Sie mir bitte bis [Datum] relevante Belege/Screens. Ich melde mich bis [Rückmeldezeit] mit einem Update.<br/>
-              Freundliche Grüße – <span data-token="name3">Lukas Bach</span>
-            </div>
-          </details>
-        </div>
-        <p class="inner note">Kontakt: <span data-token="contact">[Telefon / E-Mail / LinkedIn]</span></p>
-      </section>
-    </div>
+        <details>
+          <summary>E‑Mail‑Musterantwort (kurz)</summary>
+          <div class="small" style="margin-top:8px">
+            Betreff: Ihr Vorgang [Referenz] – Prüfung eingeleitet<br><br>
+            Guten Tag [Name],<br>
+            ich habe Ihren Widerspruch zum Vorgang [Referenz] erfasst und eine Überprüfung veranlasst.<br>
+            Bitte senden Sie – sofern vorhanden – Nachweise (z. B. Quittungen, System‑Logs, Bestätigungen, Fotos/Screenshots) bis [Datum].<br>
+            Grundlage sind die gültigen Bedingungen sowie die vorliegenden Daten; wir gleichen diese mit Ihren Angaben ab.<br>
+            Sie erhalten das Ergebnis schriftlich. Freundliche Grüße<br>
+            [Name] – Kundenservice
+          </div>
+        </details>
+      </div>
+
+      <!-- 3‑Modul‑Schulung -->
+      <div class="card" style="margin-top:14px">
+        <h2>Schulung: 3‑Modul‑Training De‑eskalation & Qualität</h2>
+        <p class="small">Ziel: Souveräner Auftritt am Telefon & per E‑Mail, saubere Faktenlage, nachvollziehbare Entscheidungen.</p>
+
+        <h3>Struktur & Ziele</h3>
+        <ul>
+          <li><strong>Modul&nbsp;1 – Gespräch & De‑eskalation (2 h):</strong> Leitfaden (LEAP), Einwandbehandlung, Ton & Grenzen, Rollenspiele.</li>
+          <li><strong>Modul&nbsp;2 – Fakten & Nachweise (2 h):</strong> Beleg‑/Dokustandards, Technik‑Check, Dokumentation.</li>
+          <li><strong>Modul&nbsp;3 – Entscheidung & Kulanz (2 h):</strong> Kulanzmatrix, Eskalationswege, SLA/KPI‑Tracking, Qualitätsreview.</li>
+        </ul>
+
+        <details>
+          <summary>Modul&nbsp;1 – Inhalte & Übungen</summary>
+          <ul class="small">
+            <li>Leitfaden kurz: Anerkennen → Struktur → Fakten → Optionen → Frist</li>
+            <li>Rollenspiele: „Unklare Regeln“, „Technikstörung“, „Zuständigkeit unklar“</li>
+            <li>Check: Wann Gespräch beenden? (Beleidigungen/Drohungen)</li>
+            <li>Artefakte: Telefonskript, 5 Einwand‑Bausteine, E‑Mail‑Snippets</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Modul&nbsp;2 – Inhalte & Übungen</summary>
+          <ul class="small">
+            <li>Belegstandard: Übersicht + Details, nachvollziehbare Quelle/Quelle dokumentieren</li>
+            <li>Technik‑Protokoll: Systemstatus, Zeit‑Sync, Alternativen</li>
+            <li>Dokustandards: Referenz, Zeitfenster, Nachweis‑Liste, Entscheidung</li>
+            <li>Artefakte: Checkliste „Fakten sichern“, Kurzanleitung Belege</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Modul&nbsp;3 – Inhalte & Übungen</summary>
+          <ul class="small">
+            <li>Kulanzmatrix anwenden (Erstverstoß gering, Technikstörung, Regelwerk unklar, Wiederholung)</li>
+            <li>Eskalationswege: Frontline → Teamlead → QS/Datenschutz → Auftraggeber:in</li>
+            <li>SLA/KPI: Erstantwort &lt; 24 h, Beleg‑Check 100 %, Eskalationsquote −25 %</li>
+            <li>Artefakte: Entscheidungsprotokoll, Monatsreport (1‑Pager)</li>
+          </ul>
+        </details>
+
+        <h3 style="margin-top:12px">Aufgaben (Häkchen setzt Fortschritt)</h3>
+        <ul>
+          <li><label><input type="checkbox" data-id="t1-playbook"> Playbook finalisieren (Skript, E‑Mail‑Muster, Einwand‑Bausteine)</label></li>
+          <li><label><input type="checkbox" data-id="t2-standards"> Beleg‑ & Dokumentationsstandards veröffentlichen</label></li>
+          <li><label><input type="checkbox" data-id="t3-kulanz"> Kulanzmatrix abstimmen & freigeben</label></li>
+          <li><label><input type="checkbox" data-id="t4-shadow"> Shadowing & Coaching‑Slots (2×/MA) einplanen</label></li>
+          <li><label><input type="checkbox" data-id="t5-kpi"> KPI‑Dashboard anlegen (Eskalationsquote, Erstantwort, Beleg‑Check)</label></li>
+          <li><label><input type="checkbox" data-id="t6-review"> Monatsreview & Lessons Learned Kalender‑Invite</label></li>
+        </ul>
+      </div>
+
+      <div class="card" style="margin-top:14px">
+        <h2>Kommunikations‑Leitlinien</h2>
+        <p class="small">Kurz & menschlich, klare Next Steps, Transparenz über Status & Verantwortliche.</p>
+        <span class="pill">Empathie</span>
+        <span class="pill">Klarheit</span>
+        <span class="pill">Verbindlichkeit</span>
+        <span class="pill">Digital zuerst</span>
+      </div>
+
+      <!-- Glossar / Abkürzungen -->
+      <div class="card" style="margin-top:14px">
+        <h2>Fachbegriffe (kurz erklärt)</h2>
+        <ul class="small">
+          <li><strong>KPI</strong>: Kennzahl zur Steuerung/Erfolgskontrolle.</li>
+          <li><strong>CSAT</strong>: Kundenzufriedenheit (Skalenbewertung).</li>
+          <li><strong>NPS</strong>: Weiterempfehlungs‑Index (−100 bis +100).</li>
+          <li><strong>SLA</strong>: Service‑Level‑Vereinbarung (z. B. Antwortzeiten).</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer class="small" style="opacity:.75;margin:14px 4px 40px">© Lukas Bach · <a href="https://lukasbach585-boop.github.io/Lebenslauf." target="_blank" rel="noopener">Online‑Lebenslauf</a></footer>
   </div>
 
   <script>
-    // Konfig übernehmen (ohne Unternehmens-Feld)
-    function applyCfg(){
-      const name = document.getElementById('iName').value || 'Lukas Bach';
-      const role = document.getElementById('iRole').value || 'Customer Success / Key Account';
-      const contact = document.getElementById('iContact').value || '[Telefon / E-Mail / LinkedIn]';
-      document.querySelectorAll('[data-token="name"]').forEach(e=>e.textContent = name);
-      document.querySelectorAll('[data-token="name2"]').forEach(e=>e.textContent = name);
-      document.querySelectorAll('[data-token="name3"]').forEach(e=>e.textContent = name);
-      document.querySelectorAll('[data-token="role"]').forEach(e=>e.textContent = role);
-      document.querySelectorAll('[data-token="contact"]').forEach(e=>e.textContent = contact);
-      // Button-Kontrast sicherstellen
-      document.querySelectorAll('.btn').forEach(b=>{
-        b.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--primary') || '#0f766e';
-      });
-    }
-    document.getElementById('btnApply').addEventListener('click', applyCfg);
-    applyCfg();
+    // --- Utilities
+    const $ = (sel, el=document) => el.querySelector(sel);
+    const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
 
-    // „Als HTML speichern“ (lokal)
-    document.getElementById('btnSave').addEventListener('click', () => {
-      const blob = new Blob(
-        ['<!DOCTYPE html>\\n', document.documentElement.outerHTML],
-        { type: 'text/html;charset=utf-8' }
-      );
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = '90-Tage-Plan_Customer-Success.html';
-      document.body.appendChild(a);
-      a.click();
-      URL.revokeObjectURL(a.href);
-      a.remove();
+    // --- View switching
+    const panelSlides = $('#panelSlides');
+    const panelTodo = $('#panelTodo');
+    const tab1 = $('#tab1');
+    const tab2 = $('#tab2');
+    const btnViewSlides = $('#btnViewSlides');
+    const btnViewTodo = $('#btnViewTodo');
+
+    function showSlides(){
+      panelSlides.classList.add('active');
+      panelTodo.classList.remove('active');
+      tab1.checked = true;
+      updateProgress();
+    }
+    function showTodo(){
+      panelTodo.classList.add('active');
+      panelSlides.classList.remove('active');
+      tab2.checked = true;
+    }
+
+    btnViewSlides.addEventListener('click', showSlides);
+    btnViewTodo.addEventListener('click', showTodo);
+    tab1.addEventListener('change', showSlides);
+    tab2.addEventListener('change', showTodo);
+
+    // --- Slides navigation
+    const slides = $$('.slide');
+    const progressBar = $('#progressBar');
+    let index = 0;
+
+    function render(){
+      slides.forEach((s,i)=>s.classList.toggle('active', i===index));
+      updateProgress();
+      document.title = (slides[index].dataset.title ? slides[index].dataset.title + ' – ' : '') + 'Ramp‑up‑Plan (90 Tage) – Lukas Bach';
+    }
+    function updateProgress(){
+      const pct = ((index+1)/slides.length)*100;
+      progressBar.style.width = pct + '%';
+    }
+
+    $('#next').addEventListener('click', ()=>{ index = (index+1)%slides.length; render(); });
+    $('#prev').addEventListener('click', ()=>{ index = (index-1+slides.length)%slides.length; render(); });
+
+    // Keyboard shortcuts
+    window.addEventListener('keydown', (e)=>{
+      if(e.key==='ArrowRight' || e.key.toLowerCase()==='d'){ index=(index+1)%slides.length; render(); }
+      if(e.key==='ArrowLeft'  || e.key.toLowerCase()==='a'){ index=(index-1+slides.length)%slides.length; render(); }
+      if(e.key.toLowerCase()==='p'){ showSlides(); }
+      if(e.key.toLowerCase()==='t'){ showTodo(); }
     });
+
+    // --- To-do persistence (localStorage)
+    const STORE_TODO = 'rampup_todo_v1';
+    const STORE_KPI  = 'rampup_kpi_v1';
+
+    function saveTodos(){
+      const map = {};
+      $$('#panelTodo input[type="checkbox"]').forEach(cb=> map[cb.dataset.id] = cb.checked);
+      localStorage.setItem(STORE_TODO, JSON.stringify(map));
+    }
+    function loadTodos(){
+      const raw = localStorage.getItem(STORE_TODO);
+      if(!raw) return;
+      const map = JSON.parse(raw);
+      $$('#panelTodo input[type="checkbox"]').forEach(cb=> cb.checked = !!map[cb.dataset.id]);
+    }
+    $$('#panelTodo input[type="checkbox"]').forEach(cb=> cb.addEventListener('change', saveTodos));
+
+    $('#resetTodo').addEventListener('click', ()=>{
+      if(confirm('Alle Häkchen der Checklisten zurücksetzen?')){
+        $$('#panelTodo input[type="checkbox"]').forEach(cb=> cb.checked=false);
+        saveTodos();
+      }
+    });
+
+    function saveKpis(){
+      const data = {
+        a: $('#kpi-a').value,
+        b: $('#kpi-b').value,
+        c: $('#kpi-c').value,
+        d: $('#kpi-d').value,
+      };
+      localStorage.setItem(STORE_KPI, JSON.stringify(data));
+    }
+    function loadKpis(){
+      const raw = localStorage.getItem(STORE_KPI);
+      if(!raw) return;
+      const d = JSON.parse(raw);
+      $('#kpi-a').value = d.a || '';
+      $('#kpi-b').value = d.b || '';
+      $('#kpi-c').value = d.c || '';
+      $('#kpi-d').value = d.d || '';
+    }
+    ['kpi-a','kpi-b','kpi-c','kpi-d'].forEach(id=> $('#'+id).addEventListener('input', saveKpis));
+
+    $('#resetKpi').addEventListener('click', ()=>{
+      if(confirm('Alle KPI‑Eingaben zurücksetzen?')){
+        ['kpi-a','kpi-b','kpi-c','kpi-d'].forEach(id=> $('#'+id).value='');
+        saveKpis();
+      }
+    });
+
+    // Init
+    loadTodos();
+    loadKpis();
+    render();
   </script>
 </body>
 </html>
